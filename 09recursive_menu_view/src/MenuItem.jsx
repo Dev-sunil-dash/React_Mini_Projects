@@ -13,7 +13,7 @@ function MenuItem({ item }) {
         })
     }
     return (
-        <li>
+        <li className='menu-item'>
             <div style={{ display: 'flex', gap: '20px' }}>
                 <p>{item.label}</p>
                 {
