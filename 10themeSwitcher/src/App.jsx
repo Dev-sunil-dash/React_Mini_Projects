@@ -1,40 +1,44 @@
 
-import React, { useState } from 'react';
-import { ThemeProvider, useTheme } from './context/ThemeContext';
-import './App.css';
+import { useEffect, useState } from 'react'
+import './App.css'
+import { ThemeProvider } from './context/theme'
+import ThemeBtn from './components/ThemeBtn'
+import Card from './components/Card'
 
 function App() {
-  const { theme, toggleTheme } = useTheme();
+  const [themeMode, setThemeMode] = useState("light")
+
+  const lightTheme = () => {
+    setThemeMode("light")
+  }
+
+  const darkTheme = () => {
+    setThemeMode("dark")
+  }
+
+  // actual change in theme
+
+  useEffect(() => {
+    document.querySelector('html').classList.remove("light", "dark")
+    document.querySelector('html').classList.add(themeMode)
+  }, [themeMode])
+
 
   return (
-    <div className={`flex flex-wrap min-h-screen items-center ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>
-      <h1 className="text-red-600 text-3xl font-bold underline text-center w-full">
-        Theme Switcher
-      </h1>
-      <div className='w-full'>
-        <div className='w-full max-w-sm mx-auto flex justify-center mb-4'>
-          <button
-            className={`px-4 py-2 ${theme === 'light' ? 'bg-blue-500 text-white' : 'bg-yellow-500 text-black'} rounded`}
-            onClick={toggleTheme}
-          >
-            {theme === 'light' ? 'Switch to Dark' : 'Switch to Light'}
-          </button>
-        </div>
-        <div className='w-full max-w-sm mx-auto'>
-          <div className={`shadow-md ${theme === 'light' ? 'text-gray-800 bg-white' : 'text-white bg-gray-800'} rounded-lg p-6`}>
-            <h2 className="text-lg font-bold mb-2">Themed Card</h2>
-            <p>This card has different styles based on the theme.</p>
+    <ThemeProvider value={{ themeMode, lightTheme, darkTheme }}>
+      <div className="flex flex-wrap min-h-screen items-center">
+        <div className="w-full">
+          <div className="w-full max-w-sm mx-auto flex justify-end mb-4">
+            <ThemeBtn />
+          </div>
+
+          <div className="w-full max-w-sm mx-auto">
+            <Card />
           </div>
         </div>
       </div>
-    </div>
-  );
+    </ThemeProvider>
+  )
 }
 
-const ThemedApp = () => (
-  <ThemeProvider>
-    <App />
-  </ThemeProvider>
-);
-
-export default ThemedApp;
+export default App
