@@ -1,6 +1,7 @@
-require("./model/db")
-
+require("./module/db")
+const bodyParser = require("body-parser")
 const express = require ('express');
+const cors = require ("cors")
 const app = express();
 
 const {
@@ -8,14 +9,18 @@ const {
     post,
     update,
     remove
-} = require ("./src/task/task.controller")
+} = require ("./src/student/student.controller")
 
 app.listen(8000)
 
-app.get("/task", get)
+app.use(cors())
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 
-app.post("/task", post)
+app.get("/student", get)
 
-app.put("/task", update)
+app.post("/student", post)
 
-app.delete("/task", remove)
+app.put("/student/:id", update)
+
+app.delete("/student/:id", remove)
